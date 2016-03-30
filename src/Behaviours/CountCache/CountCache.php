@@ -41,9 +41,13 @@ class CountCache
         $this->apply(function ($config) {
             $foreignKey = $this->key($config['foreignKey']);
 
-            if ($this->model->getOriginal($foreignKey) && $this->model->{$foreignKey} != $this->model->getOriginal($foreignKey)) {
-                $this->updateCacheRecord($config, '-', 1, $this->model->getOriginal($foreignKey));
-                $this->updateCacheRecord($config, '+', 1, $this->model->{$foreignKey});
+            if ($this->model->{$foreignKey} != $this->model->getOriginal($foreignKey)) {
+                if($this->model->getOriginal($foreignKey)){
+                    $this->updateCacheRecord($config, '-', 1, $this->model->getOriginal($foreignKey));
+                }
+                if($this->model->{$foreignKey}){
+                    $this->updateCacheRecord($config, '+', 1, $this->model->{$foreignKey});
+                }
             }
         });
     }
